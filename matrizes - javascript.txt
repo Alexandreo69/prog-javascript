@@ -1,0 +1,196 @@
+// Programa para manipulação de matrizes 3x3 no Code.org
+// Alexandre — Menu interativo com operações básicas
+
+// Matrizes iniciais (preenchidas com zeros)
+var A = criarMatrizVazia();
+var B = criarMatrizVazia();
+
+function criarMatrizVazia() {
+  return [
+    [0,0,0],
+    [0,0,0],
+    [0,0,0]
+  ];
+}
+
+// Função para entrada manual de matriz
+function preencherMatriz(nome) {
+  var M = criarMatrizVazia();
+  for (var i = 0; i < 3; i++) {
+    for (var j = 0; j < 3; j++) {
+      M[i][j] = Number(prompt("Digite o valor de " + nome + "[" + i + "][" + j + "]:"));
+    }
+  }
+  return M;
+}
+
+// Função para exibir matriz
+function mostrarMatriz(M, titulo) {
+  console.log("=== " + titulo + " ===");
+  for (var i = 0; i < 3; i++) {
+    console.log(M[i][0] + "\t" + M[i][1] + "\t" + M[i][2]);
+  }
+}
+
+// Operações
+function somarMatrizes(M1, M2) {
+  var R = criarMatrizVazia();
+  for (var i=0; i<3; i++) {
+    for (var j=0; j<3; j++) {
+      R[i][j] = M1[i][j] + M2[i][j];
+    }
+  }
+  return R;
+}
+
+function subtrairMatrizes(M1, M2) {
+  var R = criarMatrizVazia();
+  for (var i=0; i<3; i++) {
+    for (var j=0; j<3; j++) {
+      R[i][j] = M1[i][j] - M2[i][j];
+    }
+  }
+  return R;
+}
+
+function multiplicarMatrizes(M1, M2) {
+  var R = criarMatrizVazia();
+  for (var i=0; i<3; i++) {
+    for (var j=0; j<3; j++) {
+      var soma = 0;
+      for (var k=0; k<3; k++) {
+        soma += M1[i][k] * M2[k][j];
+      }
+      R[i][j] = soma;
+    }
+  }
+  return R;
+}
+
+function dividirElementos(M1, M2) {
+  var R = criarMatrizVazia();
+  for (var i=0; i<3; i++) {
+    for (var j=0; j<3; j++) {
+      if (M2[i][j] !== 0) {
+        R[i][j] = M1[i][j] / M2[i][j];
+      } else {
+        R[i][j] = null; // divisão por zero
+      }
+    }
+  }
+  return R;
+}
+
+function transposta(M) {
+  var R = criarMatrizVazia();
+  for (var i=0; i<3; i++) {
+    for (var j=0; j<3; j++) {
+      R[i][j] = M[j][i];
+    }
+  }
+  return R;
+}
+
+function inversa(M) {
+  // Cálculo da inversa usando método da adjunta/determinante
+  var det = determinante3x3(M);
+  if (det === 0) {
+    console.log("Matriz não possui inversa (determinante = 0).");
+    return null;
+  }
+  var adj = adjunta(M);
+  var R = criarMatrizVazia();
+  for (var i=0; i<3; i++) {
+    for (var j=0; j<3; j++) {
+      R[i][j] = adj[i][j] / det;
+    }
+  }
+  return R;
+}
+
+function determinante3x3(M) {
+  return (
+    M[0][0]*(M[1][1]*M[2][2] - M[1][2]*M[2][1]) -
+    M[0][1]*(M[1][0]*M[2][2] - M[1][2]*M[2][0]) +
+    M[0][2]*(M[1][0]*M[2][1] - M[1][1]*M[2][0])
+  );
+}
+
+function adjunta(M) {
+  var R = criarMatrizVazia();
+  R[0][0] =  (M[1][1]*M[2][2] - M[1][2]*M[2][1]);
+  R[0][1] = -(M[1][0]*M[2][2] - M[1][2]*M[2][0]);
+  R[0][2] =  (M[1][0]*M[2][1] - M[1][1]*M[2][0]);
+  R[1][0] = -(M[0][1]*M[2][2] - M[0][2]*M[2][1]);
+  R[1][1] =  (M[0][0]*M[2][2] - M[0][2]*M[2][0]);
+  R[1][2] = -(M[0][0]*M[2][1] - M[0][1]*M[2][0]);
+  R[2][0] =  (M[0][1]*M[1][2] - M[0][2]*M[1][1]);
+  R[2][1] = -(M[0][0]*M[1][2] - M[0][2]*M[1][0]);
+  R[2][2] =  (M[0][0]*M[1][1] - M[0][1]*M[1][0]);
+  // Transpor para cofactores
+  return transposta(R);
+}
+
+// Menu principal
+function menu() {
+  var opcao = prompt(
+    "MENU MATRIZES 3x3\n"+
+    "1 - Preencher Matriz A\n"+
+    "2 - Preencher Matriz B\n"+
+    "3 - Soma A + B\n"+
+    "4 - Subtração A - B\n"+
+    "5 - Multiplicação A × B\n"+
+    "6 - Divisão elemento a elemento A ÷ B\n"+
+    "7 - Transposta de A\n"+
+    "8 - Transposta de B\n"+
+    "9 - Inversa de A\n"+
+    "10 - Inversa de B\n"+
+    "0 - Sair\n"+
+    "Escolha a opção:"
+  );
+  
+  switch(opcao) {
+    case "1":
+      A = preencherMatriz("A");
+      mostrarMatriz(A, "Matriz A");
+      break;
+    case "2":
+      B = preencherMatriz("B");
+      mostrarMatriz(B, "Matriz B");
+      break;
+    case "3":
+      mostrarMatriz(somarMatrizes(A,B), "A + B");
+      break;
+    case "4":
+      mostrarMatriz(subtrairMatrizes(A,B), "A - B");
+      break;
+    case "5":
+      mostrarMatriz(multiplicarMatrizes(A,B), "A × B");
+      break;
+    case "6":
+      mostrarMatriz(dividirElementos(A,B), "A ÷ B (elemento a elemento)");
+      break;
+    case "7":
+      mostrarMatriz(transposta(A), "Transposta de A");
+      break;
+    case "8":
+      mostrarMatriz(transposta(B), "Transposta de B");
+      break;
+    case "9":
+      var invA = inversa(A);
+      if (invA) mostrarMatriz(invA, "Inversa de A");
+      break;
+    case "10":
+      var invB = inversa(B);
+      if (invB) mostrarMatriz(invB, "Inversa de B");
+      break;
+    case "0":
+      return; // Sai do programa
+    default:
+      console.log("Opção inválida!");
+  }
+  menu(); // Volta ao menu
+}
+
+// Inicia o programa
+menu();
