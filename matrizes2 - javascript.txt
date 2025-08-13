@@ -1,0 +1,178 @@
+// === MATRIZES 3x3 ===
+// Autor: Alexandre - Adaptado para execução com saída em tempo real no Code.org
+
+// Cria uma matriz 3x3 com zeros
+function criarMatrizVazia() {
+  return [
+    [0,0,0],
+    [0,0,0],
+    [0,0,0]
+  ];
+}
+
+var A = criarMatrizVazia();
+var B = criarMatrizVazia();
+var saida = "";
+
+// Mostra matriz no textArea
+function mostrarMatriz(M, titulo) {
+  saida += "\n=== " + titulo + " ===\n";
+  for (var i = 0; i < 3; i++) {
+    saida += M[i][0] + "\t" + M[i][1] + "\t" + M[i][2] + "\n";
+  }
+  setText("saidaTxt", saida);
+}
+
+// Preenche matriz a partir das entradas de tela
+function preencherMatriz(nome) {
+  var M = criarMatrizVazia();
+  for (var i = 0; i < 3; i++) {
+    for (var j = 0; j < 3; j++) {
+      M[i][j] = getNumber("entrada" + nome + i + j);
+    }
+  }
+  return M;
+}
+
+// === OPERAÇÕES ===
+function somarMatrizes(M1, M2) {
+  var R = criarMatrizVazia();
+  for (var i=0; i<3; i++) {
+    for (var j=0; j<3; j++) {
+      R[i][j] = M1[i][j] + M2[i][j];
+    }
+  }
+  return R;
+}
+
+function subtrairMatrizes(M1, M2) {
+  var R = criarMatrizVazia();
+  for (var i=0; i<3; i++) {
+    for (var j=0; j<3; j++) {
+      R[i][j] = M1[i][j] - M2[i][j];
+    }
+  }
+  return R;
+}
+
+function multiplicarMatrizes(M1, M2) {
+  var R = criarMatrizVazia();
+  for (var i=0; i<3; i++) {
+    for (var j=0; j<3; j++) {
+      var soma = 0;
+      for (var k=0; k<3; k++) {
+        soma += M1[i][k] * M2[k][j];
+      }
+      R[i][j] = soma;
+    }
+  }
+  return R;
+}
+
+function dividirElementos(M1, M2) {
+  var R = criarMatrizVazia();
+  for (var i=0; i<3; i++) {
+    for (var j=0; j<3; j++) {
+      if (M2[i][j] !== 0) {
+        R[i][j] = M1[i][j] / M2[i][j];
+      } else {
+        R[i][j] = null;
+      }
+    }
+  }
+  return R;
+}
+
+function transposta(M) {
+  var R = criarMatrizVazia();
+  for (var i=0; i<3; i++) {
+    for (var j=0; j<3; j++) {
+      R[i][j] = M[j][i];
+    }
+  }
+  return R;
+}
+
+function determinante3x3(M) {
+  return (
+    M[0][0]*(M[1][1]*M[2][2] - M[1][2]*M[2][1]) -
+    M[0][1]*(M[1][0]*M[2][2] - M[1][2]*M[2][0]) +
+    M[0][2]*(M[1][0]*M[2][1] - M[1][1]*M[2][0])
+  );
+}
+
+function adjunta(M) {
+  var R = criarMatrizVazia();
+  R[0][0] =  (M[1][1]*M[2][2] - M[1][2]*M[2][1]);
+  R[0][1] = -(M[1][0]*M[2][2] - M[1][2]*M[2][0]);
+  R[0][2] =  (M[1][0]*M[2][1] - M[1][1]*M[2][0]);
+  R[1][0] = -(M[0][1]*M[2][2] - M[0][2]*M[2][1]);
+  R[1][1] =  (M[0][0]*M[2][2] - M[0][2]*M[2][0]);
+  R[1][2] = -(M[0][0]*M[2][1] - M[0][1]*M[2][0]);
+  R[2][0] =  (M[0][1]*M[1][2] - M[0][2]*M[1][1]);
+  R[2][1] = -(M[0][0]*M[1][2] - M[0][2]*M[1][0]);
+  R[2][2] =  (M[0][0]*M[1][1] - M[0][1]*M[1][0]);
+  return transposta(R);
+}
+
+function inversa(M) {
+  var det = determinante3x3(M);
+  if (det === 0) {
+    saida += "\nMatriz não possui inversa (determinante = 0)\n";
+    setText("saidaTxt", saida);
+    return null;
+  }
+  var adj = adjunta(M);
+  var R = criarMatrizVazia();
+  for (var i=0; i<3; i++) {
+    for (var j=0; j<3; j++) {
+      R[i][j] = adj[i][j] / det;
+    }
+  }
+  return R;
+}
+
+// === EVENTOS DOS BOTÕES ===
+onEvent("btnPreencheA", "click", function() {
+  A = preencherMatriz("A");
+  mostrarMatriz(A, "Matriz A");
+});
+
+onEvent("btnPreencheB", "click", function() {
+  B = preencherMatriz("B");
+  mostrarMatriz(B, "Matriz B");
+});
+
+onEvent("btnSoma", "click", function() {
+  mostrarMatriz(somarMatrizes(A,B), "A + B");
+});
+
+onEvent("btnSubtrai", "click", function() {
+  mostrarMatriz(subtrairMatrizes(A,B), "A - B");
+});
+
+onEvent("btnMultiplica", "click", function() {
+  mostrarMatriz(multiplicarMatrizes(A,B), "A × B");
+});
+
+onEvent("btnDivide", "click", function() {
+  mostrarMatriz(dividirElementos(A,B), "A ÷ B");
+});
+
+onEvent("btnTranspA", "click", function() {
+  mostrarMatriz(transposta(A), "Transposta de A");
+});
+
+onEvent("btnTranspB", "click", function() {
+  mostrarMatriz(transposta(B), "Transposta de B");
+});
+
+onEvent("btnInvA", "click", function() {
+  var invA = inversa(A);
+  if (invA) mostrarMatriz(invA, "Inversa de A");
+});
+
+onEvent("btnInvB", "click", function() {
+  var invB = inversa(B);
+  if (invB) mostrarMatriz(invB, "Inversa de B");
+});
