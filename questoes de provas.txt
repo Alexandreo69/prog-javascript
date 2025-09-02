@@ -1,0 +1,128 @@
+Questões de prova
+1. Qual é o resultado do código abaixo?
+let a = [1, 2, 3];
+let b = a;
+b[0] = 10;
+console.log(a);
+a) [1, 2, 3]
+b) [10, 2, 3]
+c) [1, 10, 3]
+d) [10, 10, 10]
+
+2. O que será impresso após a execução do código abaixo?
+let x = 5;
+function test() {
+  x = 10;
+  return  x = 20;
+}
+test();
+console.log(x);
+a) 5
+b) 10
+c) 20
+d) undefined
+
+3. O que é impresso pelo seguinte código?
+let arr = [10, 20, 30];
+arr.push(40);
+arr.shift();
+console.log(arr);
+a) [10, 20, 30]
+b) [20, 30, 40]
+c) [10, 40, 30]
+d) [20, 40, 30]
+4. Qual é o valor final de x após a execução do código abaixo?
+let x = 5;
+function test() {
+  x = 10;
+  return function() {
+    x = 20;
+  }
+}
+test();
+console.log(x);
+a) 5
+b) 10
+c) 20
+d) undefined
+
+5. O que será impresso pelo código abaixo?
+let obj = {a: 1, b: 2};
+function modify(o) {
+  o.a = 10;
+  o = {a: 20, b: 30};
+}
+modify(obj);
+console.log(obj.a);
+a) 1
+b) 2
+c) 10
+d) 20
+
+6. O que será o resultado da expressão [] == ![]?
+a) true
+b) false
+c) undefined
+d) NaN
+
+7. O que o seguinte código imprime?
+console.log(0 == false);
+console.log(0 === false);
+a) true, true
+b) false, false
+c) true, false
+d) false, true
+
+8. Qual é o valor de x após o código abaixo ser executado?
+let x = { a: 1 };
+let y = { a: 1 };
+console.log(x == y);
+a) true
+b) false
+c) undefined
+d) NaN
+
+9. O que será impresso após a execução do código abaixo?
+let count = 0;
+setTimeout(() => {
+  count++;
+  console.log(count);
+}, 1000);
+console.log(count);
+a) 1, 0
+b) 0, 1
+c) 1, 1
+d) 0, 0
+
+10. Qual será o valor de x após a execução do código abaixo?
+let x = 1;
+function change() {
+  x = 2;
+}
+change();
+console.log(x);
+a) 1
+b) 2
+c) undefined
+d) NaN
+Respostas:
+1.	b) [10, 2, 3]
+Explicação: Como arrays são passados por referência, a alteração em b também afeta a.
+2.	b) 10
+Explicação: A variável x é modificada dentro da função, mas o código x = 20 após o return nunca é executado.
+3.	b) [20, 30, 40]
+Explicação: O método push() adiciona 40 no final e o método shift() remove o primeiro item (10).
+4.	c) 20
+Explicação: A função interna que altera x para 20 é chamada após test(), alterando o valor de x.
+5.	c) 10
+Explicação: O objeto original obj é modificado, mas a reatribuição de o dentro da função não afeta o objeto original.
+6.	a) true
+Explicação: [] é considerado false, e ![] é true, então a comparação [] == ![] é verdadeira.
+7.	c) true, false
+Explicação: O operador == compara valores e converte tipos, então 0 == false é true. O === compara valor e tipo, então 0 === false é false.
+8.	b) false
+Explicação: Mesmo que os objetos tenham o mesmo valor, eles são diferentes em memória, então a comparação de referência resulta em false.
+9.	b) 0, 1
+Explicação: O console.log(count) antes do setTimeout imprime 0, enquanto o valor de count se altera após o timeout e imprime 1.
+10.	b) 2
+Explicação: A função change() altera o valor de x para 2.
